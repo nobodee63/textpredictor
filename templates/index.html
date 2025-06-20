@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Text Predictor</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body { 
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 20px;
+        color: #333;
+    }
+    
+    .container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 700px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        text-align: center;
+    }
+    
+    .main-title {
+        font-size: 2.4em;
+        font-weight: 800;
+        margin-bottom: 20px;
+        color: #000;
+        letter-spacing: -2px;
+    }
+    
+    .form-container {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+    }
+    
+    form {
+        display: flex;
+        width: 100%;
+        max-width: 900px; /* bigger max-width */
+    }
+    
+    input[type="text"] { 
+        flex-grow: 1;
+        font-size: 16px;
+        padding: 18px 24px;
+        border: 2px solid rgba(102, 126, 234, 0.2);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+        outline: none;
+        min-width: 0; /* prevents overflow issues */
+    }
+    
+    input[type="text"]:focus {
+        border-color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+    }
+    
+    input[type="submit"] { 
+        padding: 18px 40px;
+        font-size: 16px;
+        font-weight: 600;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        margin-left: 12px; /* space from input */
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    
+    input[type="submit"]:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+    }
+    
+    input[type="submit"]:active {
+        transform: translateY(-1px);
+    }
+        .predictions-container {
+    margin-top: 20px;
+    background: #495057;
+    border-radius: 16px;
+    padding: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.predictions-title {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #ffffff;
+    text-align: center;
+}
+
+.predictions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+    margin-top: 30px;
+}
+
+.prediction-card {
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    border: none;
+    transition: none;
+    text-align: center;
+}
+
+.prediction-card:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.prediction-field {
+    width: 100%;
+    padding: 25px 12px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    font-size: 15px;
+    background: #ffffff;
+    color: #000000;
+    font-weight: bold;
+    resize: none;
+    height: 80px;
+    font-family: inherit;
+    line-height: 1.3;
+    transition: all 0.3s ease;
+    outline: none;
+    text-align: center;
+    overflow: hidden;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.prediction-field:focus {
+    border-color: #667eea;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+.prediction-label {
+    font-weight: 700;
+    margin-bottom: 4px; /* less margin */
+    color: #ffffff;
+    font-size: 12px; /* smaller font */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.prediction-label::before {
+    content: ''; /* hiding the vertical bar */
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        margin: 20px;
+    }
+    
+    .main-title {
+        font-size: 2.5em;
+    }
+    
+    input[type="text"] {
+        max-width: 100%;
+    }
+    
+    .predictions-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        margin: 20px;
+    }
+    
+    .main-title {
+        font-size: 2.5em;
+    }
+    
+    input[type="text"] {
+        max-width: 100%;
+    }
+    
+    .predictions-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="main-title">Text Generator</h1>
+        
+        <div class="form-container">
+            <form method="POST">
+                <input type="text" name="seed_text" placeholder="Enter your Text..." required>
+                <input type="submit" value="Generate Text">
+            </form>
+        </div>
+
+        {% if predictions and predictions|length > 0 %}
+            <div class="predictions-container">
+                <h2 class="predictions-title">Generated Texts</h2>
+                
+                {% if predictions[0] %}
+                <div class="prediction-item">
+                    <textarea class="prediction-field" readonly>{{ predictions[0] }}</textarea>
+                </div>
+                {% endif %}
+                
+                {% if predictions[1] %}
+                <div class="prediction-item">
+                    <textarea class="prediction-field" readonly>{{ predictions[1] }}</textarea>
+                </div>
+                {% endif %}
+                
+                {% if predictions[2] %}
+                <div class="prediction-item">
+                    <textarea class="prediction-field" readonly>{{ predictions[2] }}</textarea>
+                </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
